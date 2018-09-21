@@ -6,16 +6,25 @@ import org.springframework.data.annotation.Id;
 public class User {
 
     @Id
-    private Long   id;
+    private String   id;
 
     private String name;
     private String lastName;
 
-    public Long getId() {
+    public User(){
+
+    }
+
+    public User(String name, String lastName){
+        this.name = name;
+        this.lastName = lastName;
+    }
+
+    public String getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(String id) {
         this.id = id;
     }
 
