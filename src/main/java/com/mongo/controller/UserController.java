@@ -2,12 +2,11 @@ package com.mongo.controller;
 
 import com.mongo.model.User;
 import com.mongo.service.UserService;
+import com.mongo.vo.request.UserRequestVO;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -19,20 +18,26 @@ public class UserController {
 
     @ResponseBody
     @RequestMapping(value = "/saveUser", method = RequestMethod.POST)
-    public User user(){
-        return userService.saveUser(new User("Vinicius", "Damasceno"));
+    public User user(@RequestBody @Valid UserRequestVO vo){
+        return userService.saveUser(new User(vo.getName(), vo.getLastName()));
     }
 
     @ResponseBody
-    @RequestMapping(value = "/findByName", method = RequestMethod.GET)
-    public User findByName(){
-        return userService.findByName("Ricardo");
+    @RequestMapping(value = "/findByName/{name}", method = RequestMethod.GET)
+    public User findByName(@PathVariable String name){
+        return userService.findByName(name);
     }
 
     @ResponseBody
-    @RequestMapping(value = "/findByLastName", method = RequestMethod.GET)
+    @RequestMapping(value = "/findByLastName/{lastName}", method = RequestMethod.GET)
+    public List<User> findByLastName(@PathVariable String lastName){
+        return userService.findUserByLastName(lastName);
+    }
+
+    @ResponseBody
+    @RequestMapping(method = RequestMethod.GET)
     public List<User> findByLastName(){
-        return userService.findUserByLastName("Damasceno");
+        return userService.findAll();
     }
 
 }
